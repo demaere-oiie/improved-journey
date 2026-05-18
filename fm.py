@@ -4,6 +4,8 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 
+batch_size=64
+
 training_data = datasets.FashionMNIST(
   root="data",
   train=True,
@@ -16,8 +18,8 @@ test_data = datasets.FashionMNIST(
   download=True,
   transform=ToTensor())
 
-train_dataloader = DataLoader(training_data, batch_size=64)
-test_dataloader = DataLoader(test_data, batch_size=64)
+train_dataloader = DataLoader(training_data, batch_size=batch_size)
+test_dataloader = DataLoader(test_data, batch_size=batch_size)
 
 class NeuralNetwork(nn.Module):
   def __init__(self):
@@ -32,15 +34,9 @@ class NeuralNetwork(nn.Module):
     )
 
   def forward(self, x):
-    x = self.flatten(x)
-    logits = self.linear_relu_stack(x)
-    return logits
+    return self.linear_relu_stack(self.flatten(x))
 
 model = NeuralNetwork()
-
-learning_rate = 1e-3
-batch_size = 64
-epochs = 5
 
 loss_fn = nn.CrossEntropyLoss()
 
@@ -60,7 +56,7 @@ def train_loop(dataloader, model, loss_fn, e):
         optimizer.zero_grad()
 
         if batch % 100 == 0:
-            loss, current = loss.item(), batch*batch_size + len(X)
+            loss, current = loss.item(), batch*batch_size
             print(f"loss: {loss:>7f} [{current:>5d}/{size:>5d}]")
 
 def test_loop(dataloader, model, loss_fn):
