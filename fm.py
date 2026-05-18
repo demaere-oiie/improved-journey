@@ -44,11 +44,13 @@ epochs = 5
 
 loss_fn = nn.CrossEntropyLoss()
 
-optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
-
-def train_loop(dataloader, model, loss_fn, optimizer):
+def train_loop(dataloader, model, loss_fn, e):
     size = len(dataloader.dataset)
     model.train()
+    if e == 0: e=1
+    e = e*(size/batch_size)
+    print(f"rate:{1/(e**0.5):>5f}")
+    optimizer = torch.optim.SGD(model.parameters(), lr=1/(e**0.5))
     for batch, (X,y) in enumerate(dataloader):
         pred = model(X)
         loss = loss_fn(pred, y)
@@ -77,9 +79,9 @@ def test_loop(dataloader, model, loss_fn):
     correct /= size
     print(f"Test Error:\n Accuracy: {(100*correct):>0.1f}%, Avg Loss: {test_loss:>8f}\n")
 
-epochs = 500
+epochs = 100
 for t in range(epochs):
     print(f"Epoch {t+1}\n------------------------------")
-    train_loop(train_dataloader, model, loss_fn, optimizer)
+    train_loop(train_dataloader, model, loss_fn, t)
     test_loop(test_dataloader, model, loss_fn)
 print("done!")
