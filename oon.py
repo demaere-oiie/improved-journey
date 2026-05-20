@@ -51,7 +51,8 @@ print(knn.fit(X_train, y_train))
 
 y_pred = knn.predict(X_train)
 
-for i,t in enumerate(y_train):
+if 0:
+  for i,t in enumerate(y_train):
     X_red = np.concatenate((X_train[:i],X_train[i+1:]), axis=0)
     y_red = np.concatenate((y_train[:i],y_train[i+1:]), axis=0)
     knn.fit(X_red,y_red)
@@ -64,3 +65,26 @@ for i,t in enumerate(y_train):
             plt.imshow(np.array(train[i]).astype("uint8"))
             plt.axis("off")
         plt.show()
+
+if 1:
+  knn = KNeighborsClassifier(n_neighbors=5)
+  knn.fit(X_train, y_train)
+  print(knn.predict_proba(None)[:24])
+  print(knn.predict_proba(None)[24:])
+
+if 0:
+        plt.figure(figsize=(10, 10))
+        for j in range(1):
+            ax = plt.subplot(1, 1, j+1)
+            plt.imshow(np.array(train[41]).astype("uint8"))
+            plt.axis("off")
+        plt.show()
+
+if 0:
+  for k in (1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31):
+    knn = KNeighborsClassifier(n_neighbors=k, weights='uniform')
+    print(k, knn.fit(X_train, y_train).score(None, y_train))
+
+  for k in (1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31):
+    knn = KNeighborsClassifier(n_neighbors=k, weights='distance')
+    print(k, knn.fit(X_train, y_train).score(None, y_train))
