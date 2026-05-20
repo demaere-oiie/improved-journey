@@ -45,14 +45,19 @@ y0 = np.zeros(24)
 y1 = np.ones(24)
 y_train = np.concatenate((y0,y1), axis=0)
 
-knn = KNeighborsClassifier(n_neighbors=4)
+knn = KNeighborsClassifier(n_neighbors=5)
 
 print(knn.fit(X_train, y_train))
 
 y_pred = knn.predict(X_train)
 
 for i,t in enumerate(y_train):
-    if t != y_pred[i]:
+    X_red = np.concatenate((X_train[:i],X_train[i+1:]), axis=0)
+    y_red = np.concatenate((y_train[:i],y_train[i+1:]), axis=0)
+    knn.fit(X_red,y_red)
+    p = knn.predict(X_train[i:i+1])[0]
+    if t != p:
+        print(i)
         plt.figure(figsize=(10, 10))
         for j in range(1):
             ax = plt.subplot(1, 1, j+1)
