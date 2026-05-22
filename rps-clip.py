@@ -10,7 +10,7 @@ processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
 def classify(image_path):
     image = Image.open(image_path)
-    classes = ["a photo of a fist", "a photo of a flat hand"] #, "a photo of two extended fingers"]
+    classes = ["a photo of a fist", "a photo of a flat hand", "a photo of a victory sign"]
 
     inputs = processor(text=classes, images=image, return_tensors="pt", padding=True).to(device)
 
@@ -27,6 +27,6 @@ def classify(image_path):
         print(f"{class_name}: {probs[0][i]*100:.2f}%")
     print()
 
-classify("../../raw/rock.png")
-classify("../../raw/paper.png")
-classify("../../raw/scissors.png")
+classify("../../raw/rock/rock.png")
+classify("../../raw/paper/paper.png")
+classify("../../raw/scissors/scissors.png")
