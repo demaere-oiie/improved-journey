@@ -27,6 +27,12 @@ def classify(image_path):
         print(f"{class_name}: {probs[0][i]*100:.2f}%")
     print()
 
-classify("../../raw/rock/rock.png")
-classify("../../raw/paper/paper.png")
-classify("../../raw/scissors/scissors.png")
+p = Path("../../raw/rock")
+for file in p.iterdir():
+    classify(file)
+p = Path("../../raw/paper")
+for file in p.iterdir():
+    classify(file)
+p = Path("../../raw/scissors")
+for file in p.iterdir():
+    classify(file)
