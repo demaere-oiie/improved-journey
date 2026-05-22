@@ -22,10 +22,11 @@ def classify(image_path):
         probs = logits_per_image.softmax(dim=-1)
 
     print(image_path)
-    print("Label probabilities:", probs)
-    for i, class_name in enumerate(classes):
-        print(f"{class_name}: {probs[0][i]*100:.2f}%")
-    print()
+    r, p, s = probs[0]
+    if r >= 0.5: print("R")
+    elif s >= 0.5: print("S")
+    elif p >= 0.5 and s <= 0.37: print("P")
+    else: print("S")
 
 p = Path("../../raw/rock")
 for file in p.iterdir():
