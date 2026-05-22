@@ -21,12 +21,13 @@ def classify(image_path):
         logits_per_image = outputs.logits_per_image
         probs = logits_per_image.softmax(dim=-1)
 
-    print(image_path)
     r, p, s = probs[0]
-    if r >= 0.5: print("R")
-    elif s >= 0.5: print("S")
-    elif p >= 0.5 and s <= 0.35: print("P")
-    else: print("S")
+    if r >= 0.5: cl = "R"
+    elif s >= 0.5: cl = "S"
+    elif p >= 0.5 and s <= 0.35: cl = "P"
+    else: cl = "S"
+
+    print(f"{cl} {image_path}")
 
 p = Path("../../raw/rock")
 for file in p.iterdir():
