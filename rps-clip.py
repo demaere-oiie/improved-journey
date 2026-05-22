@@ -25,7 +25,7 @@ def classify(image_path):
     r, p, s = probs[0]
     if r >= 0.5: print("R")
     elif s >= 0.5: print("S")
-    elif p >= 0.5 and s <= 0.37: print("P")
+    elif p >= 0.5 and s <= 0.35: print("P")
     else: print("S")
 
 p = Path("../../raw/rock")
