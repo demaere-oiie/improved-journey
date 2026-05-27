@@ -27,7 +27,7 @@ def classify(image_path):
     elif p >= 0.5 and s <= 0.35: cl = "P"
     else: cl = "S"
 
-    print(f"{cl} {image_path}")
+    print(f"{cl} {image_path} {r:.2f}:{p:.2f}:{s:.2f}")
 
 p = Path("../../raw/rock")
 for file in p.iterdir():
