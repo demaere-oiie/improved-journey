@@ -10,6 +10,8 @@ image = (
     .uv_pip_install("requests==2.34.2")
 )
 
+cache_vol = modal.Volume.from_name("burk-5-cache", create_if_missing=True)
+
 # Import required libraries
 import torch           # Main PyTorch library
 from torch.utils.data import DataLoader  # For dataset handling
@@ -354,7 +356,7 @@ def get_hyperparameters():
     learning_rate=5e-5
     return num_epochs, batch_size, learning_rate
 
-@app.function(image=image,gpu="A10:1",timeout=30*60)
+@app.function(image=image,gpu="A10:1",timeout=30*60,volumes={"/vol":cache_vol})
 def fine_tune():
     # Set random seed for reproducibility
     seed = 42
@@ -433,12 +435,12 @@ def fine_tune():
         print(f"Average loss: {avg_loss:.4f}, Test accuracy: {test_acc:.4f}")
 
     # Save the fine-tuned model
-    model.save_pretrained("./finetuned_model")
-    tokenizer.save_pretrained("./finetuned_model")
+    model.save_pretrained("/vol/finetuned_model")
+    tokenizer.save_pretrained("/vol/finetuned_model")
 
     # Test the model
     test_input = "I'm so happy to be able to finetune an LLM!"
-    test_model("./finetuned_model", test_input)
+    test_model("/vol/finetuned_model", test_input)
 
 @app.local_entrypoint()
 def main():
