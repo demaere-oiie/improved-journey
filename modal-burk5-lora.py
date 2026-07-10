@@ -372,7 +372,7 @@ def get_hyperparameters():
 
     return num_epochs, batch_size, learning_rate
 
-@app.function(image=image,gpu="A10:4",timeout=30*60,volumes={"/vol":cache_vol})
+@app.function(image=image,gpu="A10:4",timeout=15*30*60,volumes={"/vol":cache_vol})
 def fine_tune():
     # Set random seeds for reproducibility
     set_seed(42)
