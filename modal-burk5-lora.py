@@ -286,7 +286,6 @@ def test_model(model_path, test_input):
     """
     # Determine device (GPU if available, else CPU)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     print(f"Using device: {device}")
 
     # Load saved model and tokenizer
@@ -372,7 +371,7 @@ def get_hyperparameters():
 
     return num_epochs, batch_size, learning_rate
 
-@app.function(image=image,gpu="A10:4",timeout=15*30*60,volumes={"/vol":cache_vol})
+@app.function(image=image,gpu="A10:4",timeout=15*60*60,volumes={"/vol":cache_vol})
 def fine_tune():
     # Set random seeds for reproducibility
     set_seed(42)
@@ -381,7 +380,6 @@ def fine_tune():
     data_url = "https://www.thelmbook.com/data/emotions"
     model_name = "openai-community/gpt2"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     print(f"Using device: {device}")
 
     # Initialize tokenizer
