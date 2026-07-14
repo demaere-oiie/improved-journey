@@ -455,4 +455,4 @@ def fine_tune():
 
 @app.local_entrypoint()
 def main():
-    print(fine_tune.remote())
+    print(fine_tune.spawn().get())
