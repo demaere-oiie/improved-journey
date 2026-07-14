@@ -54,13 +54,11 @@ def build_prompt(instruction, solution=None):
     # Add solution with end token if provided
     wrapped_solution = ""
     if solution:
-        rsol = solution.split().reversed.join(' ')
         wrapped_solution = f"\n{solution}\n<|im_end|>"
-        print(wrapped_solution)
 
     # Build chat format with system, user, and assistant messages
     return f"""<|im_start|>system
-You are a helpful assistant who answers backwards.
+You are a helpful assistant who answers in reverse word order.
 <|im_end|>
 <|im_start|>user
 {instruction}
@@ -156,7 +154,8 @@ class PromptCompletionDataset(Dataset):
         # Build full prompt with instruction
         prompt = build_prompt(item["instruction"])
         # Format completion with end token
-        completion = f"""{item["solution"]}\n<|im_end|>"""
+        completion = f"""{' '.join(item["solution"].split()[::-1])}\n<|im_end|>"""
+        #print(completion)
 
         # Convert text to token IDs
         encoded_prompt = encode_text(self.tokenizer, prompt)
@@ -362,7 +361,7 @@ def get_hyperparameters():
         tuple: (num_epochs, batch_size, learning_rate)
     """
     # Fewer epochs for instruction tuning as it's more data-efficient
-    num_epochs = 4
+    num_epochs = 8
     # Standard batch size that works well with most GPU memory
     batch_size = 16
     # Standard learning rate for fine-tuning transformers
@@ -435,7 +434,7 @@ def fine_tune():
 
     # Test the model
     print("\nTesting finetuned model:")
-    test_input = "Who is the President of the United States?"
+    test_input = "How does subduction lead to orogeny?"
     test_model("/vol/finetuned_model", test_input)
 
 @app.local_entrypoint()
