@@ -433,7 +433,7 @@ def fine_tune():
 
     # Test the model
     print("\nTesting finetuned model:")
-    test_input = "Who is the President of the United States?"
+    test_input = "How does subduction lead to orogeny?"
     test_model("/vol/finetuned_model", test_input)
 
 @app.local_entrypoint()
