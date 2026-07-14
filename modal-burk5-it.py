@@ -184,6 +184,11 @@ def collate_fn(batch):
     Returns:
         tuple: (input_ids, attention_mask, labels, prompts, expected_completions)
     """
+    # Initialize tokenizer
+    model_name = "openai-community/gpt2"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer.pad_token = tokenizer.eos_token
+
     # Find longest sequence for padding
     max_length = max(len(item["input_ids"]) for item in batch)
 
