@@ -155,7 +155,7 @@ class PromptCompletionDataset(Dataset):
         prompt = build_prompt(item["instruction"])
         # Format completion with end token
         ss = item["solution"].split()
-        completion = f"""{' '.join(ss[1:]+ss[:1])}\n<|im_end|>"""
+        completion = f"""{' '.join(ss[-1:]+ss[:-1])}\n<|im_end|>"""
         #print(completion)
 
         # Convert text to token IDs
@@ -362,7 +362,7 @@ def get_hyperparameters():
         tuple: (num_epochs, batch_size, learning_rate)
     """
     # Fewer epochs for instruction tuning as it's more data-efficient
-    num_epochs = 8
+    num_epochs = 12
     # Standard batch size that works well with most GPU memory
     batch_size = 16
     # Standard learning rate for fine-tuning transformers
